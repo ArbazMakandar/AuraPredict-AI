@@ -16,6 +16,12 @@ AuraPredict is a premium, high-end machine learning dashboard designed to predic
 - **Predictors**: Study Hours, Attendance %, Math/Science/English Scores.
 - **Target**: Overall Performance Score (%).
 
+## 💎 Project Showcase
+The interface is engineered with a **Glassmorphism** design language, featuring:
+- **Neural Radar Maps**: Dynamic subject proficiency visualization.
+- **Quantum Badging**: Pulsing status indicators for performance tiers.
+- **Glass-Card Inputs**: Ultra-modern sliders and numerical inputs with backdrop-filter effects.
+
 ## 🛠 Tech Stack
 - **Engine**: Python 3.x
 - **UI Framework**: Streamlit
@@ -24,11 +30,18 @@ AuraPredict is a premium, high-end machine learning dashboard designed to predic
 - **Typography**: Outfit & Inter (Google Fonts)
 
 ## 🏁 Getting Started
-1. Install dependencies:
+1. **Prerequisite**: Ensure you have [Git LFS](https://git-lfs.github.com/) installed.
+2. Clone the repository and fetch large files:
    ```bash
-   pip install streamlit pandas numpy plotly joblib scikit-learn
+   git clone https://github.com/ArbazMakandar/AuraPredict-AI.git
+   cd AuraPredict-AI
+   git lfs pull
    ```
-2. Run the application:
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Run the application:
    ```bash
    streamlit run app.py
    ```
