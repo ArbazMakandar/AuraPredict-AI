@@ -254,40 +254,54 @@ with main_col1:
 with main_col2:
     if not predict_btn:
         # Default Dashboard View
-        st.markdown('<div class="glass-card" style="height: 100%;">', unsafe_allow_html=True)
-        st.markdown("### 📈 Historical Insights")
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown("### 📈 Historical Analytics Dashboard")
+        
+        # Summary Metrics Grid
+        m1, m2, m3 = st.columns(3)
+        with m1:
+            st.metric("Dataset Size", f"{len(data)}", "Students")
+        with m2:
+            st.metric("Avg Study", f"{data['study_hours'].mean():.1f}h", "Daily")
+        with m3:
+            st.metric("Avg Attendance", f"{data['attendance_percentage'].mean():.0f}%", "Rate")
+            
+        st.markdown("<br>", unsafe_allow_html=True)
         
         # Plotly Histogram of scores
         fig = px.histogram(
             data, 
             x="overall_score", 
             nbins=30,
-            title="Distribution of Student Scores",
+            title="Performance Distribution (Global)",
             color_discrete_sequence=['#00f2fe'],
             template="plotly_dark"
         )
         fig.update_layout(
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            font_family="Inter",
-            margin=dict(l=20, r=20, t=40, b=20)
+            font_family="Outfit",
+            margin=dict(l=10, r=10, t=50, b=10),
+            height=300
         )
         st.plotly_chart(fig, use_container_width=True)
         
         # Scatter Plot Study vs Score
         fig2 = px.scatter(
-            data.sample(500), 
+            data.sample(min(1000, len(data))), 
             x="study_hours", 
             y="overall_score", 
             color="attendance_percentage",
-            title="Study Hours vs Performance Impact",
+            title="Correlation: Effort vs Outcome",
             color_continuous_scale="Viridis",
             template="plotly_dark"
         )
         fig2.update_layout(
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(l=20, r=20, t=40, b=20)
+            font_family="Outfit",
+            margin=dict(l=10, r=10, t=50, b=10),
+            height=350
         )
         st.plotly_chart(fig2, use_container_width=True)
         
@@ -316,21 +330,30 @@ with main_col2:
                 level, color, icon = "CRITICAL", "#ef4444", "⚠️"
                 msg = "Intervention required. Increase study cycles and request tutoring."
 
-            st.markdown(f"""
-                <div class="glass-card" style="text-align: center; border-color: {color}44;">
-                    <div class="status-badge pulse" style="background: {color}22; color: {color}; border: 1px solid {color}44;">
-                        {icon} {level} STATUS
-                    </div>
-                    <p style="color: #94a3b8; margin: 0;">PREDICTED ACADEMIC QUOTIENT</p>
-                    <h1 class="prediction-value glow-text">{prediction:.1f}%</h1>
-                    
-                    <div style="background: rgba(255,255,255,0.05); height: 8px; border-radius: 10px; margin: 2rem 0;">
-                        <div style="background: {color}; width: {prediction}%; height: 100%; border-radius: 10px; box-shadow: 0 0 20px {color}77;"></div>
-                    </div>
-                    
-                    <p style="font-size: 1.1rem; color: #f8fafc; font-style: italic;">" {msg} "</p>
-                </div>
-            """, unsafe_allow_html=True)
+            # Result Card (Cleaned & Integrated)
+            st.markdown(f"""<div class="glass-card" style="border-color: {color}44; position: relative; overflow: hidden;">
+<div style="position: absolute; top: 0; right: 0; padding: 1rem;">
+<span class="status-badge pulse" style="background: {color}22; color: {color}; border: 1px solid {color}44; margin:0;">
+{icon} {level}
+</span>
+</div>
+<div style="text-align: left; margin-bottom: 2rem;">
+<h4 style="color: #64748b; font-family: 'Outfit'; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 0.5rem;">Prediction Result</h4>
+<h2 style="font-family: 'Outfit'; font-weight: 800; margin: 0; font-size: 1.5rem;">Academic Performance Profile</h2>
+</div>
+<div style="display: flex; align-items: baseline; gap: 1rem; margin: 2rem 0;">
+<h1 class="prediction-value glow-text">{prediction:.1f}</h1>
+<span style="font-size: 2rem; color: var(--primary); font-family: 'Outfit'; font-weight: 300;">%</span>
+</div>
+<div style="background: rgba(255,255,255,0.05); height: 6px; border-radius: 10px; margin-bottom: 1.5rem;">
+<div style="background: {color}; width: {prediction}%; height: 100%; border-radius: 10px; box-shadow: 0 0 15px {color}77;"></div>
+</div>
+<div style="background: rgba(0,242,254,0.05); padding: 1.5rem; border-radius: 16px; border-left: 4px solid {color};">
+<p style="margin: 0; font-size: 1rem; color: #cbd5e1; line-height: 1.5;">
+<strong style="color: {color};">Recommendation:</strong> {msg}
+</p>
+</div>
+</div>""", unsafe_allow_html=True)
             
             # Additional analysis charts for the prediction
             st.markdown("<br>", unsafe_allow_html=True)
